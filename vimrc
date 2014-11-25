@@ -29,6 +29,8 @@ Plugin 'bkad/CamelCaseMotion'
 Plugin 'xolox/vim-misc'
 Plugin 'xolox/vim-notes'
 Plugin 'Lokaltog/vim-easymotion'
+Plugin 'regedarek/ZoomWin'
+Plugin 'tpope/vim-unimpaired'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
