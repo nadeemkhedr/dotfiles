@@ -129,9 +129,6 @@ noremap <silent> <leader>P "+P
 vnoremap <silent> p "_dP
 vnoremap <silent> P "_dp
 
-" reselect last selection after indent / un-indent in visual and select modes
-vnoremap < <gv
-vnoremap > >gv
 vmap <Tab> >
 vmap <S-Tab> <
 
