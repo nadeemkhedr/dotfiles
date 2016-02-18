@@ -8,11 +8,30 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
 
+
+"Syntax
+Plugin 'tpope/vim-git'
+Plugin 'vim-ruby/vim-ruby'
+Plugin 'moll/vim-node'
+Plugin 'jelera/vim-javascript-syntax'
+Plugin 'pangloss/vim-javascript'
+Plugin 'othree/html5.vim'
+Plugin 'leshill/vim-json'
+Plugin 'tpope/vim-markdown'
+Plugin 'mustache/vim-mustache-handlebars'
+Plugin 'mxw/vim-jsx'
+Plugin 'ekalinin/Dockerfile.vim'
+Plugin 'ashisha/image.vim'
+
+"Tests
+Plugin 'tpope/vim-dispatch'
+Plugin 'JarrodCTaylor/vim-ember-cli-test-runner'
+
+"Plugins
 Plugin 'tpope/vim-rails'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-surround'
 Plugin 'bling/vim-bufferline'
-Bundle 'jlanzarotta/bufexplorer'
 Plugin 'kien/ctrlp.vim'
 Plugin 'Raimondi/delimitMate'
 Plugin 'mattn/emmet-vim'
@@ -20,20 +39,29 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'flazz/vim-colorschemes'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'nathanaelkane/vim-indent-guides'
-Plugin 'pangloss/vim-javascript'
-Plugin 'jelera/vim-javascript-syntax'
-Plugin 'mustache/vim-mustache-handlebars'
 Plugin 'thoughtbot/vim-rspec'
-Plugin 'mileszs/ack.vim'
+Plugin 'rking/ag.vim'
 Plugin 'bkad/CamelCaseMotion'
 Plugin 'xolox/vim-misc'
 Plugin 'xolox/vim-notes'
-Plugin 'Lokaltog/vim-easymotion'
+Plugin 'xolox/vim-colorscheme-switcher'
 Plugin 'regedarek/ZoomWin'
 Plugin 'tpope/vim-unimpaired'
+Plugin 'tpope/vim-repeat'
 Plugin 'Valloric/MatchTagAlways'
 Plugin 'editorconfig/editorconfig-vim'
 Plugin 'elentok/plaintasks.vim'
+Plugin 'tmhedberg/matchit'
+Plugin 'terryma/vim-multiple-cursors'
+Plugin 'groenewege/vim-less'
+" Track the engine.
+Plugin 'SirVer/ultisnips'
+" Snippets are separated from the engine. Add this if you want them:
+Plugin 'honza/vim-snippets'
+Plugin 'gcmt/taboo.vim'
+
+" Plugs for writing
+Plugin 'junegunn/goyo.vim'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -85,7 +113,7 @@ set smartcase
 " tabs to spaces & set width to be 2
 set expandtab
 set shiftwidth=2
-set softtabstop=2
+set tabstop=2
 
 
 " Open new split panes to right and bottom, which feels more natural
@@ -98,6 +126,8 @@ set wildmenu
 " highlight current line white space before cursor
 set list
 set listchars=trail:.
+
+:command! W w
 
 " Move between windows
 nnoremap <C-j> <C-w>j
@@ -129,6 +159,10 @@ noremap <silent> <leader>P "+P
 vnoremap <silent> p "_dP
 vnoremap <silent> P "_dp
 
+" emmit  go to the end of the word and expand
+imap <C-f> <Esc>$a<C-y>,
+nmap <C-f> $a<C-y>,
+
 vmap <Tab> >
 vmap <S-Tab> <
 
@@ -143,6 +177,9 @@ nnoremap <silent> <Leader>/ :nohlsearch<CR>
 
 " opens $MYVIMRC for editing, or use :tabedit $MYVIMRC
 nmap <Leader>v :e $MYVIMRC<CR>
+
+" bind K to grep word under cursor
+nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
 " RSpec.vim mappings
 map <Leader>t :call RunCurrentSpecFile()<CR>
@@ -160,12 +197,19 @@ set laststatus=2
 
 "let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
 if executable('ag')
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+  " Use ag over grep
+  set grepprg=ag\ --nogroup\ --nocolor
+
+  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+  let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
+
+  " ag is fast enough that CtrlP doesn't need to cache
+  let g:ctrlp_use_caching = 0
 endif
 
 " Ignore some folders and files for CtrlP indexing
 let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v\.git$|\.sass-cache$|\.hg$|\.svn$|\.yardoc|node_modules$|tmp|bower_components|\.idea$|vendor',
+  \ 'dir':  '\v\.git$|\.sass-cache$|\.hg$|\.svn$|\.yardoc|node_modules|tmp|cache|bower_components$|\.idea$|vendor|\.meteor|jspm_packages$',
   \ 'file': '\.so$\|\.dat$|\.DS_Store$'
   \ }
 
@@ -177,11 +221,15 @@ set t_Co=256
 syntax on
 
 set nospell
-"colorscheme jellybeans
-set background=dark
-colorscheme peaksea
 
-set rtp+=$HOME/.local/lib/python2.7/site-packages/powerline/bindings/vim/
+"colorscheme babymate256
+
+"highcontrast"
+colorscheme molokai
+
+"low contrast"
+"colorscheme hybrid
+set background=dark
 
 "GitGutter
 highlight clear SignColumn
@@ -196,6 +244,12 @@ autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
 
 autocmd BufNewFile,BufRead *.js.es6 set syntax=javascript
 autocmd BufNewFile,BufRead *.hb set syntax=mustache
+
+"Markdown
+autocmd FileType markdown setlocal shiftwidth=4 softtabstop=4 tabstop=4 wrap linebreak nolist wrap lbr colorcolumn=0 synmaxcol=999999
+
+" vim-jsx
+let g:jsx_ext_required = 0 "make it run on any js file
 
 " MatchTagAlways
 let g:mta_filetypes = {
