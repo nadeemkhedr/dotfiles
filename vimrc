@@ -1,70 +1,68 @@
 " Vundle
 set nocompatible              " be iMproved, required
-filetype off                  " required
-
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" let Vundle manage Vundle, required
-Plugin 'gmarik/Vundle.vim'
 
 
+call plug#begin('~/.vim/plugged')
 "Syntax
-Plugin 'tpope/vim-git'
-Plugin 'vim-ruby/vim-ruby'
-Plugin 'moll/vim-node'
-Plugin 'jelera/vim-javascript-syntax'
-Plugin 'pangloss/vim-javascript'
-Plugin 'othree/html5.vim'
-Plugin 'leshill/vim-json'
-Plugin 'tpope/vim-markdown'
-Plugin 'mustache/vim-mustache-handlebars'
-Plugin 'mxw/vim-jsx'
-Plugin 'ekalinin/Dockerfile.vim'
-Plugin 'ashisha/image.vim'
+Plug 'tpope/vim-git'
+Plug 'vim-ruby/vim-ruby'
+
+Plug 'othree/yajs.vim'
+Plug 'othree/es.next.syntax.vim'
+Plug 'othree/html5.vim'
+Plug 'gavocanov/vim-js-indent'
+Plug 'mxw/vim-jsx'
+Plug 'leshill/vim-json'
+Plug 'moll/vim-node'
+
+Plug 'tpope/vim-markdown'
+Plug 'mustache/vim-mustache-handlebars'
+Plug 'ekalinin/Dockerfile.vim'
+Plug 'ashisha/image.vim'
 
 "Tests
-Plugin 'tpope/vim-dispatch'
-Plugin 'JarrodCTaylor/vim-ember-cli-test-runner'
+Plug 'tpope/vim-dispatch'
+Plug 'JarrodCTaylor/vim-ember-cli-test-runner'
 
-"Plugins
-Plugin 'tpope/vim-rails'
-Plugin 'tpope/vim-fugitive'
-Plugin 'tpope/vim-surround'
-Plugin 'bling/vim-bufferline'
-Plugin 'kien/ctrlp.vim'
-Plugin 'Raimondi/delimitMate'
-Plugin 'mattn/emmet-vim'
-Plugin 'scrooloose/nerdtree'
-Plugin 'flazz/vim-colorschemes'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'nathanaelkane/vim-indent-guides'
-Plugin 'thoughtbot/vim-rspec'
-Plugin 'rking/ag.vim'
-Plugin 'bkad/CamelCaseMotion'
-Plugin 'xolox/vim-misc'
-Plugin 'xolox/vim-notes'
-Plugin 'xolox/vim-colorscheme-switcher'
-Plugin 'regedarek/ZoomWin'
-Plugin 'tpope/vim-unimpaired'
-Plugin 'tpope/vim-repeat'
-Plugin 'Valloric/MatchTagAlways'
-Plugin 'editorconfig/editorconfig-vim'
-Plugin 'elentok/plaintasks.vim'
-Plugin 'tmhedberg/matchit'
-Plugin 'terryma/vim-multiple-cursors'
-Plugin 'groenewege/vim-less'
-" Track the engine.
-Plugin 'SirVer/ultisnips'
+"Plugs
+Plug 'tpope/vim-rails'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-surround'
+Plug 'bling/vim-bufferline'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+
+Plug 'Raimondi/delimitMate'
+Plug 'mattn/emmet-vim'
+Plug 'scrooloose/nerdtree'
+Plug 'flazz/vim-colorschemes'
+Plug 'airblade/vim-gitgutter'
+Plug 'nathanaelkane/vim-indent-guides'
+Plug 'thoughtbot/vim-rspec'
+Plug 'rking/ag.vim'
+Plug 'bkad/CamelCaseMotion'
+Plug 'xolox/vim-misc'
+Plug 'xolox/vim-notes'
+Plug 'xolox/vim-colorscheme-switcher'
+Plug 'regedarek/ZoomWin'
+Plug 'tpope/vim-unimpaired'
+Plug 'tpope/vim-repeat'
+Plug 'Valloric/MatchTagAlways'
+Plug 'editorconfig/editorconfig-vim'
+Plug 'elentok/plaintasks.vim'
+Plug 'tmhedberg/matchit'
+Plug 'terryma/vim-multiple-cursors'
+Plug 'groenewege/vim-less'
+
+Plug 'SirVer/ultisnips'
 " Snippets are separated from the engine. Add this if you want them:
-Plugin 'honza/vim-snippets'
-Plugin 'gcmt/taboo.vim'
+Plug 'honza/vim-snippets'
+Plug 'gcmt/taboo.vim'
 
 " Plugs for writing
-Plugin 'junegunn/goyo.vim'
+Plug 'junegunn/goyo.vim'
 
-call vundle#end()            " required
-filetype plugin indent on    " required
+call plug#end()
 
 set encoding=utf-8
 " Turn on line numbers
@@ -219,6 +217,9 @@ let g:NERDTreeChDirMode = 2
 " UI
 set t_Co=256
 syntax on
+
+" Syntax coloring lines that are too long just slows down the world
+set synmaxcol=200
 
 set nospell
 
