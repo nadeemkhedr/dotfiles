@@ -2,10 +2,15 @@ call plug#begin('~/.vim/plugged')
 "Syntax
 Plug 'tpope/vim-git'
 
+
+Plug 'posva/vim-vue'
 Plug 'othree/yajs.vim'
 Plug 'othree/es.next.syntax.vim'
-Plug 'neomake/neomake'
-Plug 'sbdchd/neoformat'
+Plug 'w0rp/ale'
+Plug 'prettier/vim-prettier', {
+  \ 'do': 'npm install',
+  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
+
 Plug 'othree/html5.vim'
 Plug 'gavocanov/vim-js-indent'
 Plug 'mxw/vim-jsx'
@@ -124,6 +129,8 @@ set wildmenu
 set list
 set listchars=trail:.
 
+
+set cursorcolumn " highlight current column
 " nvim
 " If you have vim >=8.0 or Neovim >= 0.1.5
 if (has("termguicolors"))
@@ -215,6 +222,50 @@ nmap <leader><tab> <plug>(fzf-maps-n)
 xmap <leader><tab> <plug>(fzf-maps-x)
 omap <leader><tab> <plug>(fzf-maps-o)
 
+
+" Command for git grep
+" - fzf#vim#grep(command, with_column, [options], [fullscreen])
+command! -bang -nargs=* GGrep
+  \ call fzf#vim#grep('git grep --line-number '.shellescape(<q-args>), 0, <bang>0)
+
+" Override Colors command. You can safely do this in your .vimrc as fzf.vim
+" will not override existing commands.
+command! -bang Colors
+  \ call fzf#vim#colors({'left': '15%', 'options': '--reverse --margin 30%,0'}, <bang>0)
+
+" Augmenting Ag command using fzf#vim#with_preview function
+"   * fzf#vim#with_preview([[options], preview window, [toggle keys...]])
+"     * For syntax-highlighting, Ruby and any of the following tools are required:
+"       - Highlight: http://www.andre-simon.de/doku/highlight/en/highlight.php
+"       - CodeRay: http://coderay.rubychan.de/
+"       - Rouge: https://github.com/jneen/rouge
+"
+"   :Ag  - Start fzf with hidden preview window that can be enabled with "?" key
+"   :Ag! - Start fzf in fullscreen and display the preview window above
+command! -bang -nargs=* Ag
+  \ call fzf#vim#ag(<q-args>,
+  \                 <bang>0 ? fzf#vim#with_preview('up:60%')
+  \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
+  \                 <bang>0)
+
+" Similarly, we can apply it to fzf#vim#grep. To use ripgrep instead of ag:
+command! -bang -nargs=* Rg
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --no-heading --color=always '.shellescape(<q-args>), 1,
+  \   <bang>0 ? fzf#vim#with_preview('up:60%')
+  \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+  \   <bang>0)
+
+" Likewise, Files command with preview window
+command! -bang -nargs=? -complete=dir Files
+  \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
+
+command! -bang -nargs=? -complete=dir GFiles
+  \ call fzf#vim#gitfiles(<q-args>, fzf#vim#with_preview(), <bang>0)
+
+
+
+
 " Sneak
 let g:sneak#use_ic_scs = 1
 
@@ -223,12 +274,9 @@ map <Leader><space> :Scratch<CR>
 let g:scratch_persistence_file = '/Users/nadeem/Desktop/.scratch.vim'
 
 
-" neoformat
-autocmd FileType javascript setlocal formatprg=prettier\ --single-quote\ --no-semi
-" Use formatprg when available
-let g:neoformat_try_formatprg = 1
-
-map <leader>f :Neoformat<CR>
+" prettier
+let g:prettier#exec_cmd_async = 1
+nmap <Leader>f <Plug>(Prettier)
 
 " Statusbar
 set laststatus=2
@@ -282,12 +330,6 @@ let g:mta_filetypes = {
     \ 'xml' : 1
     \}
 
-"neomake
-let g:neomake_javascript_enabled_makers = ['eslint']
-let s:eslint_path = system('PATH=$(npm bin):$PATH && which eslint')
-let g:neomake_javascript_eslint_exe = substitute(s:eslint_path, '^\n*\s*\(.\{-}\)\n*\s*$', '\1', '')
-autocmd! BufWritePost *.js Neomake
-autocmd! BufWritePost *.jsx Neomake
 
 " Custom
 function! s:swap_lines(n1, n2)
