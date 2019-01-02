@@ -44,7 +44,7 @@ Plug 'flazz/vim-colorschemes'
 Plug 'rafi/awesome-vim-colorschemes'
 Plug 'airblade/vim-gitgutter'
 Plug 'nathanaelkane/vim-indent-guides'
-Plug 'rking/ag.vim'
+Plug 'mileszs/ack.vim'
 Plug 'bkad/CamelCaseMotion'
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-notes'
@@ -206,12 +206,6 @@ nmap <Leader>v :e $MYVIMRC<CR>
 " bind K to grep word under cursor
 nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
-" RSpec.vim mappings
-map <Leader>t :call RunCurrentSpecFile()<CR>
-map <Leader>s :call RunNearestSpec()<CR>
-map <Leader>l :call RunLastSpec()<CR>
-map <Leader>a :call RunAllSpecs()<CR>
-
 " Nerdtree
 nmap <Leader>n :NERDTreeFind<CR>
 nmap <Leader>m :NERDTreeToggle<CR>
@@ -222,6 +216,12 @@ nmap <leader><tab> <plug>(fzf-maps-n)
 xmap <leader><tab> <plug>(fzf-maps-x)
 omap <leader><tab> <plug>(fzf-maps-o)
 
+
+" Ack
+nnoremap <Leader>a :Ack!<Space>
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep'
+endif
 
 " Command for git grep
 " - fzf#vim#grep(command, with_column, [options], [fullscreen])
@@ -262,9 +262,6 @@ command! -bang -nargs=? -complete=dir Files
 
 command! -bang -nargs=? -complete=dir GFiles
   \ call fzf#vim#gitfiles(<q-args>, fzf#vim#with_preview(), <bang>0)
-
-
-
 
 " Sneak
 let g:sneak#use_ic_scs = 1
