@@ -18,6 +18,10 @@ Plug 'ap/vim-css-color'
 Plug 'leshill/vim-json'
 Plug 'moll/vim-node'
 
+" Go
+Plug 'sebdah/vim-delve'
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+
 Plug 'tpope/vim-markdown'
 Plug 'mustache/vim-mustache-handlebars'
 Plug 'ekalinin/Dockerfile.vim'
@@ -327,6 +331,16 @@ let g:mta_filetypes = {
     \ 'xml' : 1
     \}
 
+let g:lightline = {
+      \ 'colorscheme': 'wombat',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'filename', 'gitbranch', 'readonly', 'modified' ] ]
+      \ },
+      \ 'component_function': {
+      \   'gitbranch': 'fugitive#head'
+      \ },
+      \ }
 
 " Custom
 function! s:swap_lines(n1, n2)
