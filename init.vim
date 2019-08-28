@@ -300,6 +300,7 @@ set nospell
 
 set background=dark
 colorscheme gruvbox
+"colorscheme material-theme
 "GitGutter
 highlight clear SignColumn
 
@@ -337,10 +338,13 @@ let g:mta_filetypes = {
     \}
 
 let g:lightline = {
-      \ 'colorscheme': 'wombat',
+      \ 'colorscheme': 'powerline',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'filename', 'gitbranch', 'readonly', 'modified' ] ]
+      \             [ 'filename', 'readonly', 'modified' ] ]
+      \ },
+      \ 'inactive': {
+      \   'left': [ [ 'filename', 'readonly', 'modified' ] ]
       \ },
       \ 'component_function': {
       \   'gitbranch': 'fugitive#head'
