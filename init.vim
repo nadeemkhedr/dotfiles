@@ -18,10 +18,6 @@ Plug 'ap/vim-css-color'
 Plug 'leshill/vim-json'
 Plug 'moll/vim-node'
 
-" Go
-Plug 'sebdah/vim-delve'
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-
 Plug 'tpope/vim-markdown'
 Plug 'mustache/vim-mustache-handlebars'
 Plug 'ekalinin/Dockerfile.vim'
@@ -35,6 +31,8 @@ Plug 'janko-m/vim-test'
 Plug 'wesQ3/vim-windowswap'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-abolish'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'easymotion/vim-easymotion'
@@ -198,6 +196,9 @@ let g:user_emmet_settings = {
 \  }
 \}
 
+" vim-javascript
+let g:javascript_plugin_jsdoc = 1
+
 " Delete buffer without destroying window
 map <leader>q :bp<bar>sp<bar>bn<bar>bd<CR>
 
@@ -299,10 +300,12 @@ set synmaxcol=200
 set nospell
 
 set background=dark
-colorscheme gruvbox
-"colorscheme material-theme
+" colorscheme gruvbox
+colorscheme material-theme
 "GitGutter
 highlight clear SignColumn
+nmap <Leader>h :GitGutterLineHighlightsToggle<CR>
+
 
 fun! <SID>StripTrailingWhitespaces()
     let l = line(".")
