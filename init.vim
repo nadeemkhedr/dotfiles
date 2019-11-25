@@ -1,72 +1,54 @@
 call plug#begin('~/.vim/plugged')
-"Syntax
-Plug 'tpope/vim-git'
 
+" autocomplete, lint, prettier
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
-Plug 'posva/vim-vue'
+" nerdtree
+Plug 'scrooloose/nerdtree'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'ryanoasis/vim-devicons' " for nerdtree syntax highlight
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+
+" fuzzy find/search
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+Plug 'mileszs/ack.vim'
+
+" Javascript
 Plug 'othree/yajs.vim'
 Plug 'othree/es.next.syntax.vim'
-Plug 'w0rp/ale'
-Plug 'prettier/vim-prettier', {
-  \ 'do': 'npm install',
-  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
-
-Plug 'othree/html5.vim'
-Plug 'gavocanov/vim-js-indent'
-Plug 'mxw/vim-jsx'
-Plug 'ap/vim-css-color'
-Plug 'leshill/vim-json'
-Plug 'moll/vim-node'
-
-Plug 'tpope/vim-markdown'
-Plug 'mustache/vim-mustache-handlebars'
-Plug 'ekalinin/Dockerfile.vim'
-Plug 'mtth/scratch.vim'
-
-"Tests
-Plug 'tpope/vim-dispatch'
-Plug 'janko-m/vim-test'
+Plug 'HerringtonDarkholme/yats.vim'
+Plug 'maxmellon/vim-jsx-pretty'
+"Git
+Plug 'tpope/vim-git'
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
 
 "Plugs
-Plug 'wesQ3/vim-windowswap'
-Plug 'tpope/vim-fugitive'
+Plug 'wesQ3/vim-windowswap' " Swap windows <leader>ww
+
+" featurees
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-abolish'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
-Plug 'easymotion/vim-easymotion'
-
-Plug 'itchyny/lightline.vim'
-Plug 'Raimondi/delimitMate'
-Plug 'mattn/emmet-vim'
-Plug 'scrooloose/nerdtree'
-Plug 'flazz/vim-colorschemes'
-Plug 'rafi/awesome-vim-colorschemes'
-Plug 'airblade/vim-gitgutter'
-Plug 'nathanaelkane/vim-indent-guides'
-Plug 'mileszs/ack.vim'
-Plug 'bkad/CamelCaseMotion'
-Plug 'xolox/vim-misc'
-Plug 'xolox/vim-notes'
-Plug 'xolox/vim-colorscheme-switcher'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-repeat'
-Plug 'Valloric/MatchTagAlways'
-Plug 'editorconfig/editorconfig-vim'
-Plug 'elentok/plaintasks.vim'
 Plug 'tmhedberg/matchit'
+Plug 'mattn/emmet-vim'
+Plug 'bkad/CamelCaseMotion'
+Plug 'nathanaelkane/vim-indent-guides'
+Plug 'editorconfig/editorconfig-vim'
 Plug 'terryma/vim-multiple-cursors'
-Plug 'groenewege/vim-less'
-Plug 'matze/vim-move'
+Plug 'matze/vim-move' " In visual mode, hold <A-move> to move lines
 Plug 'machakann/vim-highlightedyank'
+Plug 'mhinz/vim-startify' " Startup screen
 
-Plug 'SirVer/ultisnips'
-" Snippets are separated from the engine. Add this if you want them:
-Plug 'honza/vim-snippets'
+" theme
+Plug 'itchyny/lightline.vim'
 
-" Plugs for writing
-Plug 'junegunn/goyo.vim'
+" colorscheme
+Plug 'flazz/vim-colorschemes'
+Plug 'rafi/awesome-vim-colorschemes'
 
 call plug#end()
 
@@ -83,7 +65,6 @@ let mapleader = ","
 " Disable backup and swap files
 set nobackup
 set noswapfile
-
 
 " Improve Unix/Windows compatibility
 set viewoptions=folds,options,cursor,unix
@@ -165,14 +146,6 @@ map <S-Down> <C-w>-
 map <S-Up> <C-w>+
 map <S-Right> <C-w>>
 
-" use <leader>d to delete a line without adding it to the yanked stack
-nnoremap <silent> <leader>d "_d
-vnoremap <silent> <leader>d "_d
-
-" use <leader>c to replace text without yanking replaced text
-nnoremap <silent> <leader>c "_c
-vnoremap <silent> <leader>c "_c
-
 " yank/paste to/from the OS clipboard
 noremap <silent> <leader>y "+y
 noremap <silent> <leader>Y "+Y
@@ -196,12 +169,6 @@ let g:user_emmet_settings = {
 \  }
 \}
 
-" vim-javascript
-let g:javascript_plugin_jsdoc = 1
-
-" Delete buffer without destroying window
-map <leader>q :bp<bar>sp<bar>bn<bar>bd<CR>
-
 "Enter add line in normal mode
 nmap <CR> o<Esc>
 
@@ -212,13 +179,6 @@ nnoremap <C-p> :GFiles<CR>
 
 " opens $MYVIMRC for editing, or use :tabedit $MYVIMRC
 nmap <Leader>v :e $MYVIMRC<CR>
-
-" bind K to grep word under cursor
-nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
-
-" Nerdtree
-nmap <Leader>n :NERDTreeFind<CR>
-nmap <Leader>m :NERDTreeToggle<CR>
 
 
 " FZF
@@ -233,61 +193,9 @@ if executable('ag')
   let g:ackprg = 'ag --vimgrep'
 endif
 
-" Command for git grep
-" - fzf#vim#grep(command, with_column, [options], [fullscreen])
-command! -bang -nargs=* GGrep
-  \ call fzf#vim#grep('git grep --line-number '.shellescape(<q-args>), 0, <bang>0)
-
-" Override Colors command. You can safely do this in your .vimrc as fzf.vim
-" will not override existing commands.
-command! -bang Colors
-  \ call fzf#vim#colors({'left': '15%', 'options': '--reverse --margin 30%,0'}, <bang>0)
-
-" Augmenting Ag command using fzf#vim#with_preview function
-"   * fzf#vim#with_preview([[options], preview window, [toggle keys...]])
-"     * For syntax-highlighting, Ruby and any of the following tools are required:
-"       - Highlight: http://www.andre-simon.de/doku/highlight/en/highlight.php
-"       - CodeRay: http://coderay.rubychan.de/
-"       - Rouge: https://github.com/jneen/rouge
-"
-"   :Ag  - Start fzf with hidden preview window that can be enabled with "?" key
-"   :Ag! - Start fzf in fullscreen and display the preview window above
-command! -bang -nargs=* Ag
-  \ call fzf#vim#ag(<q-args>,
-  \                 <bang>0 ? fzf#vim#with_preview('up:60%')
-  \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
-  \                 <bang>0)
-
-" Similarly, we can apply it to fzf#vim#grep. To use ripgrep instead of ag:
-command! -bang -nargs=* Rg
-  \ call fzf#vim#grep(
-  \   'rg --column --line-number --no-heading --color=always '.shellescape(<q-args>), 1,
-  \   <bang>0 ? fzf#vim#with_preview('up:60%')
-  \           : fzf#vim#with_preview('right:50%:hidden', '?'),
-  \   <bang>0)
-
-" Likewise, Files command with preview window
-command! -bang -nargs=? -complete=dir Files
-  \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
-
-command! -bang -nargs=? -complete=dir GFiles
-  \ call fzf#vim#gitfiles(<q-args>, fzf#vim#with_preview(), <bang>0)
-
-" Sneak
-let g:sneak#use_ic_scs = 1
-
-" Scratch
-map <Leader><space> :Scratch<CR>
-let g:scratch_persistence_file = '/Users/nadeem/Desktop/.scratch.vim'
-
-
-" prettier
-let g:prettier#exec_cmd_async = 1
-nmap <Leader>f <Plug>(Prettier)
-
-" Statusbar
-set laststatus=2
-
+" Nerdtree
+nmap <Leader>n :NERDTreeFind<CR>
+nmap <Leader>m :NERDTreeToggle<CR>
 let g:NERDTreeChDirMode = 2
 
 " UI
@@ -302,9 +210,6 @@ set nospell
 set background=dark
 " colorscheme gruvbox
 colorscheme material-theme
-"GitGutter
-highlight clear SignColumn
-nmap <Leader>h :GitGutterLineHighlightsToggle<CR>
 
 
 fun! <SID>StripTrailingWhitespaces()
@@ -354,34 +259,6 @@ let g:lightline = {
       \ },
       \ }
 
-" Custom
-function! s:swap_lines(n1, n2)
-    let line1 = getline(a:n1)
-    let line2 = getline(a:n2)
-    call setline(a:n1, line2)
-    call setline(a:n2, line1)
-endfunction
-
-function! s:swap_up()
-    let n = line('.')
-    if n == 1
-        return
-    endif
-
-    call s:swap_lines(n, n - 1)
-    exec n - 1
-endfunction
-
-function! s:swap_down()
-    let n = line('.')
-    if n == line('$')
-        return
-    endif
-
-    call s:swap_lines(n, n + 1)
-    exec n + 1
-endfunction
-
 " Zoom / Restore window.
 function! s:ZoomToggle() abort
     if exists('t:zoomed') && t:zoomed
@@ -397,9 +274,6 @@ endfunction
 command! ZoomToggle call s:ZoomToggle()
 nnoremap <leader>z :ZoomToggle<CR>
 
-noremap <leader>k :call <SID>swap_up()<CR>
-noremap <leader>j :call <SID>swap_down()<CR>
-
 " vim-move config
 " for terms that send Alt as Escape sequence
 " see http://vim.wikia.com/wiki/Mapping_fast_keycodes_in_terminal_Vim
@@ -410,3 +284,147 @@ vmap <F20> <Plug>MoveBlockDown
 vmap <F21> <Plug>MoveBlockUp
 nmap <F20> <Plug>MoveLineDown
 nmap <F21> <Plug>MoveLineUp
+
+
+
+" # COC configs
+" Better display for messages
+set cmdheight=2
+
+" You will have bad experience for diagnostic messages when it's default 4000.
+set updatetime=300
+
+" don't give |ins-completion-menu| messages.
+set shortmess+=c
+
+" always show signcolumns
+set signcolumn=auto:2
+
+" Use tab for trigger completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+" customized for coc snippet
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? coc#_select_confirm() :
+      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <C-space> coc#refresh()
+
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
+" Coc only does snippet and additional edit on confirm.
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+" Or use `complete_info` if your vim support it, like:
+" inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+
+" Use `[g` and `]g` to navigate diagnostics
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use K to show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+" Highlight symbol under cursor on CursorHold
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Remap for rename current word
+nmap <leader>rn <Plug>(coc-rename)
+
+" Remap for format selected region
+nmap <leader>f  :Format<CR>
+
+augroup mygroup
+  autocmd!
+  " Setup formatexpr specified filetype(s).
+  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+  " Update signature help on jump placeholder
+  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup end
+
+" Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
+"xmap <leader>a  <Plug>(coc-codeaction-selected)
+"nmap <leader>a  <Plug>(coc-codeaction-selected)
+
+" Remap for do codeAction of current line
+"nmap <leader>ac  <Plug>(coc-codeaction)
+" Fix autofix problem of current line
+nmap <leader>qf  <Plug>(coc-fix-current)
+
+" Create mappings for function text object, requires document symbols feature of languageserver.
+xmap if <Plug>(coc-funcobj-i)
+xmap af <Plug>(coc-funcobj-a)
+omap if <Plug>(coc-funcobj-i)
+omap af <Plug>(coc-funcobj-a)
+
+" Use <C-d> for select selections ranges, needs server support, like: coc-tsserver, coc-python
+nmap <silent> <C-d> <Plug>(coc-range-select)
+xmap <silent> <C-d> <Plug>(coc-range-select)
+
+" Use `:Format` to format current buffer
+command! -nargs=0 Format :call CocAction('format')
+
+" Use `:Fold` to fold current buffer
+command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+
+" use `:OR` for organize import of current buffer
+command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+
+" Add status line support, for integration with other plugin, checkout `:h coc-status`
+set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+
+" Using CocList
+" Show all diagnostics
+nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+" Manage extensions
+nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
+" Show commands
+nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+" Find symbol of current document
+nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+" Search workspace symbols
+nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+" Do default action for next item.
+nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+" Do default action for previous item.
+nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+" Resume latest coc list
+nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+
+" prettier command for coc
+command! -nargs=0 Prettier :CocCommand prettier.formatFile
+
+let g:coc_global_extensions = [
+  \ 'coc-snippets',
+  \ 'coc-pairs',
+  \ 'coc-tsserver',
+  \ 'coc-eslint',
+  \ 'coc-prettier',
+  \ 'coc-json',
+  \ ]
+
+
+" vim startify
+"
+let g:startify_bookmarks = [ {'p': '~/work/procella/procella-web'} ]
