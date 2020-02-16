@@ -249,15 +249,27 @@ let g:lightline = {
       \ 'colorscheme': 'powerline',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'filename', 'readonly', 'modified' ] ]
+      \             [ 'filenameOrLastFolderOfIndex', 'cocstatus', 'readonly', 'modified' ] ]
       \ },
       \ 'inactive': {
-      \   'left': [ [ 'filename', 'readonly', 'modified' ] ]
+      \   'left': [ [ 'filenameOrLastFolderOfIndex', 'readonly', 'modified' ] ]
       \ },
       \ 'component_function': {
-      \   'gitbranch': 'fugitive#head'
+      \   'gitbranch': 'fugitive#head',
+      \   'filenameOrLastFolderOfIndex': 'LightLineFixIndexFiles',
+      \   'cocstatus': 'coc#status',
       \ },
       \ }
+function! LightLineFixIndexFiles()
+    let filenameonly = expand('%:t:r')
+    if filenameonly ==? "index"
+        return remove(split(expand("%:h"), "/"), -1) . "/" . expand("%:t")
+    else
+        return expand("%:t")
+    endif
+endfunction
+
+autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
 
 " Zoom / Restore window.
 function! s:ZoomToggle() abort
