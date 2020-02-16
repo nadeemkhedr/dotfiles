@@ -6,8 +6,6 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " nerdtree
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'ryanoasis/vim-devicons' " for nerdtree syntax highlight
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 
 " fuzzy find/search
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -30,6 +28,9 @@ Plug 'wesQ3/vim-windowswap' " Swap windows <leader>ww
 " featurees
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
+
+"Want to turn fooBar into foo_bar? Press crs (coerce to snake_case). MixedCase (crm), camelCase (crc), snake_case (crs), UPPER_CASE (cru), dash-case (cr-), dot.case (cr.), space case (cr<space>), and Title Case (crt) are all just 3 keystrokes away.
+
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-repeat'
@@ -196,7 +197,9 @@ endif
 " Nerdtree
 nmap <Leader>n :NERDTreeFind<CR>
 nmap <Leader>m :NERDTreeToggle<CR>
-let g:NERDTreeChDirMode = 2
+" if there are multiple plugins active that shows something on the left of the
+" files
+" let g:NERDTreeChDirMode = 2
 
 " UI
 set t_Co=256
@@ -296,10 +299,18 @@ vmap <F20> <Plug>MoveBlockDown
 vmap <F21> <Plug>MoveBlockUp
 nmap <F20> <Plug>MoveLineDown
 nmap <F21> <Plug>MoveLineUp
+" vim-windowswap Configs
 
+let g:windowswap_map_keys = 0 "prevent default bindings
+nnoremap <silent> <leader>s :call WindowSwap#EasyWindowSwap()<CR>
 
 
 " # COC configs
+" # Shortcuts:
+" # normal: K shows documentation
+" # insert: <c-space> autocomplete
+"
+"
 " Better display for messages
 set cmdheight=2
 
@@ -363,6 +374,14 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 
 " Remap for rename current word
 nmap <leader>rn <Plug>(coc-rename)
+nmap <leader>rz <Plug>(coc-refactor)
+
+" Remap for do codeAction of selected region
+function! s:cocActionsOpenFromSelected(type) abort
+  execute 'CocCommand actions.open ' . a:type
+endfunction
+xmap <silent> <leader>a :<C-u>execute 'CocCommand actions.open ' . visualmode()<CR>
+nmap <silent> <leader>a :<C-u>set operatorfunc=<SID>cocActionsOpenFromSelected<CR>g@
 
 " Remap for format selected region
 nmap <leader>f  :Format<CR>
@@ -376,11 +395,7 @@ augroup mygroup
 augroup end
 
 " Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
-"xmap <leader>a  <Plug>(coc-codeaction-selected)
-"nmap <leader>a  <Plug>(coc-codeaction-selected)
 
-" Remap for do codeAction of current line
-"nmap <leader>ac  <Plug>(coc-codeaction)
 " Fix autofix problem of current line
 nmap <leader>qf  <Plug>(coc-fix-current)
 
@@ -403,9 +418,6 @@ command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 " use `:OR` for organize import of current buffer
 command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
 
-" Add status line support, for integration with other plugin, checkout `:h coc-status`
-set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
-
 " Using CocList
 " Show all diagnostics
 nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
@@ -427,6 +439,10 @@ nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 " prettier command for coc
 command! -nargs=0 Prettier :CocCommand prettier.formatFile
 
+" coc-word add more words for auto completion
+" coc-emoji add : auto complete for emoji in markdown files
+" coc-spell-checker: spell checker, use code action to see the list
+" coc-actions: dropdown style for actions works on neovim
 let g:coc_global_extensions = [
   \ 'coc-snippets',
   \ 'coc-pairs',
@@ -434,9 +450,12 @@ let g:coc_global_extensions = [
   \ 'coc-eslint',
   \ 'coc-prettier',
   \ 'coc-json',
+  \ 'coc-word',
+  \ 'coc-spell-checker',
+  \ 'coc-emoji',
+  \ 'coc-actions'
   \ ]
-
 
 " vim startify
 "
-let g:startify_bookmarks = [ {'p': '~/work/procella/procella-web'} ]
+let g:startify_bookmarks = [ {'p': '~/work/procella/client'} ]
