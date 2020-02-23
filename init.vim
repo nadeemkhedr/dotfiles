@@ -23,14 +23,13 @@ Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 
 "Plugs
-Plug 'wesQ3/vim-windowswap' " Swap windows <leader>ww
+Plug 'wesQ3/vim-windowswap' " Swap windows <leader>s
 
 " featurees
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 
 "Want to turn fooBar into foo_bar? Press crs (coerce to snake_case). MixedCase (crm), camelCase (crc), snake_case (crs), UPPER_CASE (cru), dash-case (cr-), dot.case (cr.), space case (cr<space>), and Title Case (crt) are all just 3 keystrokes away.
-
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-repeat'
@@ -43,6 +42,7 @@ Plug 'terryma/vim-multiple-cursors'
 Plug 'matze/vim-move' " In visual mode, hold <A-move> to move lines
 Plug 'machakann/vim-highlightedyank'
 Plug 'mhinz/vim-startify' " Startup screen
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
 
 " theme
 Plug 'itchyny/lightline.vim'
@@ -232,7 +232,7 @@ omap <leader><tab> <plug>(fzf-maps-o)
 " Ack
 nnoremap <Leader>a :Ack!<Space>
 if executable('ag')
-  let g:ackprg = 'ag --vimgrep'
+  let g:ackprg = 'ag --nogroup --nocolor --column'
 endif
 
 " Nerdtree
@@ -290,13 +290,13 @@ let g:mta_filetypes = {
     \}
 
 let g:lightline = {
-      \ 'colorscheme': 'powerline',
+      \ 'colorscheme': 'wombat',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'filenameOrLastFolderOfIndex', 'cocstatus', 'readonly', 'modified' ] ]
+      \             [ 'filenameOrLastFolderOfIndex', 'modified', 'cocstatus', 'readonly'] ]
       \ },
       \ 'inactive': {
-      \   'left': [ [ 'filenameOrLastFolderOfIndex', 'readonly', 'modified' ] ]
+      \   'left': [ [ 'filenameOrLastFolderOfIndex', 'modified', 'readonly' ] ]
       \ },
       \ 'component_function': {
       \   'gitbranch': 'fugitive#head',
@@ -395,12 +395,15 @@ nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
 " Remap keys for gotos
 nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gv :call CocAction('jumpDefinition', 'vsplit')<CR>
+
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
 " Use K to show documentation in preview window
 nnoremap <silent> K :call <SID>show_documentation()<CR>
+
 
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
@@ -421,8 +424,8 @@ nmap <leader>rz <Plug>(coc-refactor)
 function! s:cocActionsOpenFromSelected(type) abort
   execute 'CocCommand actions.open ' . a:type
 endfunction
-xmap <silent> <leader>a :<C-u>execute 'CocCommand actions.open ' . visualmode()<CR>
-nmap <silent> <leader>a :<C-u>set operatorfunc=<SID>cocActionsOpenFromSelected<CR>g@
+xmap <silent> <leader>c :<C-u>execute 'CocCommand actions.open ' . visualmode()<CR>
+nmap <silent> <leader>c :<C-u>set operatorfunc=<SID>cocActionsOpenFromSelected<CR>g@
 
 " Remap for format selected region
 nmap <leader>f  :Format<CR>
