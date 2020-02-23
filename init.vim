@@ -51,6 +51,9 @@ Plug 'itchyny/lightline.vim'
 Plug 'flazz/vim-colorschemes'
 Plug 'rafi/awesome-vim-colorschemes'
 
+"Tab rename
+Plug 'gcmt/taboo.vim'
+
 call plug#end()
 
 " Turn on line numbers
@@ -135,11 +138,49 @@ endif
 
 :command! W w
 
+" SHORTCUTS:
+" ]m, [m next and prev method
+" <C-d> expands selection
+" <C-e>, <C-y> scroll down and up
+" zb, zt, zz change view screen
+" H, M, L change cursor
+" * search for text under the word
+" m then anything to mark, ` then same char to go to mark
+
+
 " Move between windows
 nnoremap <C-h> <C-w>h
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 nnoremap <C-j> <C-w>j
+
+noremap <leader>x :bd<CR>
+
+" Tabs settings:
+noremap <leader>tt :tab split<CR>
+noremap <leader>tc :tabe<CR>
+noremap <leader>tx :tabclose<CR>
+noremap <leader>tr :TabooRename<Space>
+
+
+" Move between tabs by number
+noremap <leader>1 1gt
+noremap <leader>2 2gt
+noremap <leader>3 3gt
+noremap <leader>4 4gt
+noremap <leader>5 5gt
+noremap <leader>6 6gt
+noremap <leader>7 7gt
+noremap <leader>8 8gt
+noremap <leader>9 9gt
+
+
+let g:taboo_tab_format = ' [%N]%f%m '
+let g:taboo_renamed_tab_format = ' [%N]%l%m '
+
+" End of Tab Settings
+
+
 
 " Resize windows
 map <S-Left> <C-w><
