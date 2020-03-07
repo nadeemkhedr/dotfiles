@@ -22,6 +22,15 @@ Plug 'tpope/vim-git'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 
+Plug 'jparise/vim-graphql'
+
+"Markdown
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
+Plug 'junegunn/goyo.vim' " Run using :Goyo command for focus mode
+Plug 'junegunn/limelight.vim'
+
 "Plugs
 Plug 'wesQ3/vim-windowswap' " Swap windows <leader>s
 
@@ -42,7 +51,7 @@ Plug 'terryma/vim-multiple-cursors'
 Plug 'matze/vim-move' " In visual mode, hold <A-move> to move lines
 Plug 'machakann/vim-highlightedyank'
 Plug 'mhinz/vim-startify' " Startup screen
-Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
+Plug 'kristijanhusak/vim-carbon-now-sh' " code screenshots using :CarbonNowSh cmd
 
 " theme
 Plug 'itchyny/lightline.vim'
@@ -53,6 +62,9 @@ Plug 'rafi/awesome-vim-colorschemes'
 
 "Tab rename
 Plug 'gcmt/taboo.vim'
+
+" snippets
+Plug 'honza/vim-snippets'
 
 call plug#end()
 
@@ -190,9 +202,12 @@ map <S-Right> <C-w>>
 
 " yank/paste to/from the OS clipboard
 noremap <silent> <leader>y "+y
+noremap <silent> <leader>yy "+y
+nmap <leader>yf :let @" = expand("%")<cr>
 noremap <silent> <leader>Y "+Y
 noremap <silent> <leader>p "+p
 noremap <silent> <leader>P "+P
+
 
 " paste without yanking replaced text in visual mode
 vnoremap <silent> p "_dP
@@ -204,6 +219,14 @@ nmap <C-f> $a<C-y>,
 
 vmap <Tab> >
 vmap <S-Tab> <
+
+" markdown & presentation
+let g:vim_markdown_folding_disabled = 1
+nnoremap <Leader>` :Goyo<CR>
+nnoremap <Leader>l :Limelight!!<CR>
+xmap <Leader>l <Plug>(Limelight)
+autocmd! User GoyoEnter Limelight
+autocmd! User GoyoLeave Limelight!
 
 let g:user_emmet_settings = {
 \  'javascript.jsx' : {
