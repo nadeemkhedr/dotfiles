@@ -1,3 +1,17 @@
+" Used Shortcuts:
+" ]m, [m next and prev method
+" <C-d> expands selection
+" <C-e>, <C-y> scroll down and up
+" zb, zt, zz change view screen
+" H, M, L change cursor
+" * search for text under the word
+" m then anything to mark, ` then same char to go to mark
+
+" # Git Gutter
+" jump to next hunk (change): ]c
+" jump to previous hunk (change): [c.
+
+
 call plug#begin('~/.vim/plugged')
 
 " autocomplete, lint, prettier
@@ -66,7 +80,13 @@ Plug 'gcmt/taboo.vim'
 " snippets
 Plug 'honza/vim-snippets'
 
+Plug 'vifm/vifm.vim'
+
 call plug#end()
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => General Settings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Turn on line numbers
 set number
@@ -116,10 +136,6 @@ set tabstop=2
 " set column 81 with special color
 set colorcolumn=81
 
-" Open new split panes to right and bottom, which feels more natural
-set splitbelow
-set splitright
-
 " auto complete menu
 set wildmenu
 
@@ -150,15 +166,15 @@ endif
 
 :command! W w
 
-" SHORTCUTS:
-" ]m, [m next and prev method
-" <C-d> expands selection
-" <C-e>, <C-y> scroll down and up
-" zb, zt, zz change view screen
-" H, M, L change cursor
-" * search for text under the word
-" m then anything to mark, ` then same char to go to mark
+noremap <leader>x <C-w>c
+noremap <leader>q :bd<CR>
 
+"""""""""""""""""""""""""""""""
+" => Splits & Tabs
+"""""""""""""""""""""""""""""""
+" Open new split panes to right and bottom, which feels more natural
+set splitbelow
+set splitright
 
 " Move between windows
 nnoremap <C-h> <C-w>h
@@ -166,177 +182,15 @@ nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 nnoremap <C-j> <C-w>j
 
-noremap <leader>x :bd<CR>
+" Make adjusing split sizes a bit more friendly
+noremap <silent> <S-Left> :vertical resize +3<CR>
+noremap <silent> <S-Right> :vertical resize -3<CR>
+noremap <silent> <S-Up> :resize +3<CR>
+noremap <silent> <S-Down> :resize -3<CR>
 
-" Tabs settings:
-noremap <leader>tt :tab split<CR>
-noremap <leader>tc :tabe<CR>
-noremap <leader>tx :tabclose<CR>
-noremap <leader>tr :TabooRename<Space>
-
-
-" Move between tabs by number
-noremap <leader>1 1gt
-noremap <leader>2 2gt
-noremap <leader>3 3gt
-noremap <leader>4 4gt
-noremap <leader>5 5gt
-noremap <leader>6 6gt
-noremap <leader>7 7gt
-noremap <leader>8 8gt
-noremap <leader>9 9gt
-
-
-let g:taboo_tab_format = ' [%N]%f%m '
-let g:taboo_renamed_tab_format = ' [%N]%l%m '
-
-" End of Tab Settings
-
-
-
-" Resize windows
-map <S-Left> <C-w><
-map <S-Down> <C-w>-
-map <S-Up> <C-w>+
-map <S-Right> <C-w>>
-
-" yank/paste to/from the OS clipboard
-noremap <silent> <leader>y "+y
-noremap <silent> <leader>yy "+y
-nmap <leader>yf :let @" = expand("%")<cr>
-noremap <silent> <leader>Y "+Y
-noremap <silent> <leader>p "+p
-noremap <silent> <leader>P "+P
-
-
-" paste without yanking replaced text in visual mode
-vnoremap <silent> p "_dP
-vnoremap <silent> P "_dp
-
-" emmet  go to the end of the word and expand
-imap <C-f> <Esc>$a<C-y>,
-nmap <C-f> $a<C-y>,
-
-vmap <Tab> >
-vmap <S-Tab> <
-
-" markdown & presentation
-let g:vim_markdown_folding_disabled = 1
-nnoremap <Leader>` :Goyo<CR>
-nnoremap <Leader>l :Limelight!!<CR>
-xmap <Leader>l <Plug>(Limelight)
-autocmd! User GoyoEnter Limelight
-autocmd! User GoyoLeave Limelight!
-
-let g:user_emmet_settings = {
-\  'javascript.jsx' : {
-\      'extends' : 'jsx',
-\  }
-\}
-
-"Enter add line in normal mode
-nmap <CR> o<Esc>
-
-" Deselect selected text
-nnoremap <silent> <Leader>/ :nohlsearch<CR>
-
-nnoremap <C-p> :GFiles<CR>
-
-" opens $MYVIMRC for editing, or use :tabedit $MYVIMRC
-nmap <Leader>v :e $MYVIMRC<CR>
-
-
-" FZF
-nmap <leader><tab> <plug>(fzf-maps-n)
-xmap <leader><tab> <plug>(fzf-maps-x)
-omap <leader><tab> <plug>(fzf-maps-o)
-
-
-" Ack
-nnoremap <Leader>a :Ack!<Space>
-if executable('ag')
-  let g:ackprg = 'ag --nogroup --nocolor --column'
-endif
-
-" Nerdtree
-nmap <Leader>n :NERDTreeFind<CR>
-nmap <Leader>m :NERDTreeToggle<CR>
-" if there are multiple plugins active that shows something on the left of the
-" files
-" let g:NERDTreeChDirMode = 2
-
-" UI
-set t_Co=256
-syntax on
-
-" Syntax coloring lines that are too long just slows down the world
-set synmaxcol=200
-
-set nospell
-
-set background=dark
-" colorscheme gruvbox
-colorscheme material-theme
-
-
-fun! <SID>StripTrailingWhitespaces()
-    let l = line(".")
-    let c = col(".")
-    %s/\s\+$//e
-    call cursor(l, c)
-endfun
-autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
-
-autocmd BufNewFile,BufRead *.js.es6 set syntax=javascript
-autocmd BufNewFile,BufRead *.hb set syntax=mustache
-
-"CamelCaseMotion
-call camelcasemotion#CreateMotionMappings('<leader>')
-
-
-"windowswap
+" windowswap
 let g:windowswap_map_keys = 0 "prevent default bindings
 nnoremap <silent> <leader>s :call WindowSwap#EasyWindowSwap()<CR>
-
-"Markdown
-autocmd FileType markdown setlocal shiftwidth=4 softtabstop=4 tabstop=4 wrap linebreak nolist wrap lbr colorcolumn=0 synmaxcol=999999
-
-" vim-jsx
-let g:jsx_ext_required = 0 "make it run on any js file
-
-" MatchTagAlways
-let g:mta_filetypes = {
-    \ 'html' : 1,
-    \ 'mustache' : 1,
-    \ 'xhtml' : 1,
-    \ 'xml' : 1
-    \}
-
-let g:lightline = {
-      \ 'colorscheme': 'wombat',
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'filenameOrLastFolderOfIndex', 'modified', 'cocstatus', 'readonly'] ]
-      \ },
-      \ 'inactive': {
-      \   'left': [ [ 'filenameOrLastFolderOfIndex', 'modified', 'readonly' ] ]
-      \ },
-      \ 'component_function': {
-      \   'gitbranch': 'fugitive#head',
-      \   'filenameOrLastFolderOfIndex': 'LightLineFixIndexFiles',
-      \   'cocstatus': 'coc#status',
-      \ },
-      \ }
-function! LightLineFixIndexFiles()
-    let filenameonly = expand('%:t:r')
-    if filenameonly ==? "index"
-        return remove(split(expand("%:h"), "/"), -1) . "/" . expand("%:t")
-    else
-        return expand("%:t")
-    endif
-endfunction
-
-autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
 
 " Zoom / Restore window.
 function! s:ZoomToggle() abort
@@ -353,21 +207,189 @@ endfunction
 command! ZoomToggle call s:ZoomToggle()
 nnoremap <leader>z :ZoomToggle<CR>
 
-" vim-move config
-" for terms that send Alt as Escape sequence
-" see http://vim.wikia.com/wiki/Mapping_fast_keycodes_in_terminal_Vim
-" for why the <F20> hack. Keeps Esc from waiting for other keys to exit visual
-set <F20>=j
-set <F21>=k
-vmap <F20> <Plug>MoveBlockDown
-vmap <F21> <Plug>MoveBlockUp
-nmap <F20> <Plug>MoveLineDown
-nmap <F21> <Plug>MoveLineUp
-" vim-windowswap Configs
+" tab shortcuts
+noremap <leader>tt :tab split<CR>
+noremap <leader>tc :tabe<CR>
+noremap <leader>tx :tabclose<CR>
+noremap <leader>tr :TabooRename<Space>
 
-let g:windowswap_map_keys = 0 "prevent default bindings
-nnoremap <silent> <leader>s :call WindowSwap#EasyWindowSwap()<CR>
+" Move between tabs by number
+noremap <leader>1 1gt
+noremap <leader>2 2gt
+noremap <leader>3 3gt
+noremap <leader>4 4gt
+noremap <leader>5 5gt
+noremap <leader>6 6gt
+noremap <leader>7 7gt
+noremap <leader>8 8gt
+noremap <leader>9 9gt
 
+let g:taboo_tab_format = ' [%N]%f%m '
+let g:taboo_renamed_tab_format = ' [%N]%l%m '
+
+
+"""""""""""""""""""""""""""""""
+" => Yanking & Pasting
+"""""""""""""""""""""""""""""""
+
+" yank/paste to/from the OS clipboard
+noremap <silent> <leader>y "+y
+noremap <silent> <leader>yy "+y
+nmap <leader>yf :let @" = expand("%")<cr>
+noremap <silent> <leader>Y "+Y
+noremap <silent> <leader>p "+p
+noremap <silent> <leader>P "+P
+
+
+" paste without yanking replaced text in visual mode
+vnoremap <silent> p "_dP
+vnoremap <silent> P "_dp
+
+
+
+"""""""""""""""""""""""""""""""
+" => Emmet
+"""""""""""""""""""""""""""""""
+" emmet  go to the end of the word and expand
+imap <C-f> <Esc>$a<C-y>,
+nmap <C-f> $a<C-y>,
+
+let g:user_emmet_settings = {
+\  'javascript.jsx' : {
+\      'extends' : 'jsx',
+\  }
+\}
+
+
+"""""""""""""""""""""""""""""""
+" => Goyo & Markdown
+"""""""""""""""""""""""""""""""
+let g:vim_markdown_folding_disabled = 1
+nnoremap <Leader>` :Goyo<CR>
+nnoremap <Leader>l :Limelight!!<CR>
+xmap <Leader>l <Plug>(Limelight)
+autocmd! User GoyoEnter Limelight
+autocmd! User GoyoLeave Limelight!
+
+autocmd FileType markdown setlocal shiftwidth=4 softtabstop=4 tabstop=4 wrap linebreak nolist wrap lbr colorcolumn=0 synmaxcol=999999
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => General Remap Keys
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"Enter add line in normal mode
+nmap <CR> o<Esc>
+
+" Deselect selected text
+nnoremap <silent> <Leader>/ :nohlsearch<CR>
+
+
+" opens $MYVIMRC for editing, or use :tabedit $MYVIMRC
+nmap <Leader>v :e $MYVIMRC<CR>
+
+
+"""""""""""""""""""""""""""""""
+" => FZF
+"""""""""""""""""""""""""""""""
+nmap <leader><tab> <plug>(fzf-maps-n)
+xmap <leader><tab> <plug>(fzf-maps-x)
+omap <leader><tab> <plug>(fzf-maps-o)
+nnoremap <C-p> :GFiles<CR>
+
+
+"""""""""""""""""""""""""""""""
+" => Ack
+"""""""""""""""""""""""""""""""
+nnoremap <Leader>a :Ack!<Space>
+if executable('ag')
+  let g:ackprg = 'ag --nogroup --nocolor --column'
+endif
+
+"""""""""""""""""""""""""""""""
+" => Nerdtree
+"""""""""""""""""""""""""""""""
+nmap <Leader>n :NERDTreeFind<CR>
+nmap <Leader>m :NERDTreeToggle<CR>
+" if there are multiple plugins active that shows something on the left of the
+" files
+" let g:NERDTreeChDirMode = 2
+
+
+"""""""""""""""""""""""""""""""
+" => Theme
+"""""""""""""""""""""""""""""""
+set t_Co=256
+syntax on
+
+" Syntax coloring lines that are too long just slows down the world
+set synmaxcol=200
+
+set nospell
+
+
+set background=dark
+
+colorscheme purify
+" colorscheme gruvbox
+" colorscheme material-theme
+
+
+"""""""""""""""""""""""""""""""
+" => Strip trailling whitespaces on save
+"""""""""""""""""""""""""""""""
+fun! <SID>StripTrailingWhitespaces()
+    let l = line(".")
+    let c = col(".")
+    %s/\s\+$//e
+    call cursor(l, c)
+endfun
+autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
+
+
+"""""""""""""""""""""""""""""""
+" => CamelCaseMotion
+"""""""""""""""""""""""""""""""
+call camelcasemotion#CreateMotionMappings('<leader>')
+
+
+"""""""""""""""""""""""""""""""
+" => Lightline
+"""""""""""""""""""""""""""""""
+let g:lightline = {
+      \ 'colorscheme': 'purify',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'filenameOrLastFolderOfIndex', 'modified', 'readonly'] ]
+      \ },
+      \ 'inactive': {
+      \   'left': [ [ 'filenameOrLastFolderOfIndex', 'modified', 'readonly' ] ]
+      \ },
+      \ 'component_function': {
+      \   'gitbranch': 'fugitive#head',
+      \   'filenameOrLastFolderOfIndex': 'LightLineFixIndexFiles',
+      \ },
+      \ }
+function! LightLineFixIndexFiles()
+    let filenameonly = expand('%:t:r')
+    if filenameonly ==? "index"
+        return remove(split(expand("%:h"), "/"), -1) . "/" . expand("%:t")
+    else
+        return expand("%:t")
+    endif
+endfunction
+
+autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
+
+"""""""""""""""""""""""""""""""
+" => Vifm
+"""""""""""""""""""""""""""""""
+map <Leader>vv :Vifm<CR>
+map <Leader>vs  :VsplitVifm<CR>
+map <Leader>vp  :SplitVifm<CR>
+
+"""""""""""""""""""""""""""""""
+" => COC
+"""""""""""""""""""""""""""""""
 
 " # COC configs
 " # Shortcuts:
@@ -463,9 +485,6 @@ augroup end
 
 " Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
 
-" Fix autofix problem of current line
-nmap <leader>qf  <Plug>(coc-fix-current)
-
 " Create mappings for function text object, requires document symbols feature of languageserver.
 xmap if <Plug>(coc-funcobj-i)
 xmap af <Plug>(coc-funcobj-a)
@@ -473,8 +492,8 @@ omap if <Plug>(coc-funcobj-i)
 omap af <Plug>(coc-funcobj-a)
 
 " Use <C-d> for select selections ranges, needs server support, like: coc-tsserver, coc-python
-nmap <silent> <C-d> <Plug>(coc-range-select)
-xmap <silent> <C-d> <Plug>(coc-range-select)
+" nmap <silent> <C-d> <Plug>(coc-range-select)
+" xmap <silent> <C-d> <Plug>(coc-range-select)
 
 " Use `:Format` to format current buffer
 command! -nargs=0 Format :call CocAction('format')
@@ -520,9 +539,12 @@ let g:coc_global_extensions = [
   \ 'coc-word',
   \ 'coc-spell-checker',
   \ 'coc-emoji',
-  \ 'coc-actions'
+  \ 'coc-actions',
+  \ 'coc-cssmodules'
   \ ]
 
-" vim startify
+"""""""""""""""""""""""""""""""
+" => Vim startify
+"""""""""""""""""""""""""""""""
 let g:startify_change_to_vcs_root = 1
 let g:startify_bookmarks = [ {'p': '~/work/procella/client'} ]
