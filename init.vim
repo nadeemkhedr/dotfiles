@@ -38,6 +38,9 @@ Plug 'airblade/vim-gitgutter'
 
 Plug 'jparise/vim-graphql'
 
+" Go lang
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+
 "Markdown
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
@@ -428,6 +431,13 @@ map <Leader>vv :Vifm<CR>
 map <Leader>vs  :VsplitVifm<CR>
 map <Leader>vp  :SplitVifm<CR>
 
+
+"""""""""""""""""""""""""""""""
+" => GoLang
+"""""""""""""""""""""""""""""""
+" coc-go
+autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
+
 """""""""""""""""""""""""""""""
 " => COC
 """""""""""""""""""""""""""""""
@@ -581,7 +591,8 @@ let g:coc_global_extensions = [
   \ 'coc-spell-checker',
   \ 'coc-emoji',
   \ 'coc-actions',
-  \ 'coc-cssmodules'
+  \ 'coc-cssmodules',
+  \ 'coc-go'
   \ ]
 
 """""""""""""""""""""""""""""""
