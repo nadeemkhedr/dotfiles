@@ -235,7 +235,6 @@ let g:taboo_renamed_tab_format = ' [%N]%l%m '
 " yank/paste to/from the OS clipboard
 noremap <silent> <leader>y "+y
 noremap <silent> <leader>yy "+y
-nmap <leader>yf :let @" = expand("%")<cr>
 noremap <silent> <leader>Y "+Y
 noremap <silent> <leader>p "+p
 noremap <silent> <leader>P "+P
@@ -245,6 +244,48 @@ noremap <silent> <leader>P "+P
 vnoremap <silent> p "_dP
 vnoremap <silent> P "_dp
 
+
+" Basic copy
+"nmap <leader>yf :let @" = expand("%")<cr>
+
+" Bug: Potential problems if dir name has '.' in it
+" Copy file path, remove extention, 'src/' & 'index.*' if its at the end
+function! s:yank_file()
+  let path = expand("%")
+  let pathList = split(path, '\.')
+
+  " name is in root
+  if(len(pathList) == 0)
+    echo path
+    return path
+  endif
+
+  " remove extention if its a js or a ts file
+  let ext = pathList[len(pathList) - 1]
+  if(ext == 'js' || ext == 'jsx' || ext == 'ts' || ext == 'tsx')
+    let path = pathList[0]
+    let pathList = split(path, '/')
+  endif
+
+  " check if file ends with /index, then remove it
+  let lastSegment = pathList[len(pathList) - 1]
+  if(lastSegment == 'index')
+    let list = split(path, '/index')
+    let path = list[0]
+  endif
+
+  " check if file starts with src/, then remove it
+  let firstSegment = pathList[0]
+  if(firstSegment == 'src')
+    let list = split(path, 'src/')
+    let path = list[0]
+  endif
+
+  " last item is not an index
+  echo path
+  return path
+endfunction
+nmap <leader>yf :let @"=<SID>yank_file()<CR>
 
 
 """""""""""""""""""""""""""""""
