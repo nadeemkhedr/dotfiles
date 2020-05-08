@@ -11,6 +11,8 @@
 " jump to next hunk (change): ]c
 " jump to previous hunk (change): [c.
 
+" # COC actions
+" <leader>c(selector)
 
 call plug#begin('~/.vim/plugged')
 
@@ -329,7 +331,16 @@ nnoremap <silent> <Leader>/ :nohlsearch<CR>
 
 
 " opens $MYVIMRC for editing, or use :tabedit $MYVIMRC
-nmap <Leader>v :e $MYVIMRC<CR>
+nmap <Leader>ov :e $MYVIMRC<CR>
+
+" find and edit a ".env" file in a git project dir
+function! s:edit_env_file()
+let dir = finddir('.git/..', expand('%:p:h').';')
+let file = findfile('.env', dir)
+execute "e ".fnameescape(file)
+endfunction
+nnoremap  <Leader>oe :call <SID>edit_env_file()<CR>
+
 
 
 """""""""""""""""""""""""""""""
