@@ -6,7 +6,14 @@
 " H, M, L change cursor
 " * search for text under the word
 " m then anything to mark, ` then same char to go to mark
-
+" <c-^> switch between last 2 edited files
+"
+" # COC configs
+" # Shortcuts:
+" # normal: K shows documentation (<c-w>p to focus on the popup)
+" # insert: <c-space> autocomplete
+"
+"
 " # Git Gutter
 " jump to next hunk (change): ]c
 " jump to previous hunk (change): [c.
@@ -27,6 +34,7 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'mileszs/ack.vim'
+Plug 'unblevable/quick-scope'
 
 " Javascript
 Plug 'othree/yajs.vim'
@@ -85,6 +93,10 @@ Plug 'gcmt/taboo.vim'
 " snippets
 Plug 'honza/vim-snippets'
 
+" shortcuts
+Plug 'liuchengxu/vim-which-key'
+
+" vifm
 Plug 'vifm/vifm.vim'
 
 call plug#end()
@@ -306,6 +318,12 @@ let g:user_emmet_settings = {
 \  }
 \}
 
+"""""""""""""""""""""""""""""""
+" => fugitive
+"""""""""""""""""""""""""""""""
+nmap <leader>gh :diffget //3<CR>
+nmap <leader>gu :diffget //2<CR>
+nmap <leader>gs :G<CR>
 
 """""""""""""""""""""""""""""""
 " => Goyo & Markdown
@@ -442,6 +460,21 @@ map <Leader>vv :Vifm<CR>
 map <Leader>vs  :VsplitVifm<CR>
 map <Leader>vp  :SplitVifm<CR>
 
+"""""""""""""""""""""""""""""""
+" => vim-which-key
+"""""""""""""""""""""""""""""""
+nnoremap <silent> <leader> :WhichKey ','<CR>
+
+"""""""""""""""""""""""""""""""
+" => quickscope
+"""""""""""""""""""""""""""""""
+" Trigger a highlight in the appropriate direction when pressing these keys:
+let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
+
+highlight QuickScopePrimary guifg='#00C7DF' gui=underline ctermfg=155 cterm=underline
+highlight QuickScopeSecondary guifg='#eF5F70' gui=underline ctermfg=81 cterm=underline
+
+let g:qs_max_chars=150
 
 """""""""""""""""""""""""""""""
 " => GoLang
@@ -453,12 +486,6 @@ autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeIm
 " => COC
 """""""""""""""""""""""""""""""
 
-" # COC configs
-" # Shortcuts:
-" # normal: K shows documentation
-" # insert: <c-space> autocomplete
-"
-"
 " Better display for messages
 set cmdheight=2
 
