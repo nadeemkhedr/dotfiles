@@ -1,0 +1,15 @@
+{
+  "suggest.noselect": false,
+  "javascript.suggest.enabled": false,
+  "diagnostic.signOffset": 9999999,
+  "coc.preferences.formatOnSaveFiletypes": [
+    "javascript",
+    "typescript",
+    "typescriptreact",
+    "json",
+    "javascriptreact",
+    "typescript.tsx",
+    "graphql"
+  ],
+  "cSpell.userWords": ["dropdowns", "xlarge"]
+}
